@@ -589,6 +589,7 @@ WysiwygEditor.propTypes = {
   customDecorators: PropTypes.array,
   editorRef: PropTypes.func,
   handlePastedText: PropTypes.func,
+  onDragMove: PropTypes.func,
 };
 
 WysiwygEditor.defaultProps = {
@@ -597,6 +598,7 @@ WysiwygEditor.defaultProps = {
   stripPastedStyles: false,
   localization: { locale: 'en', translations: {} },
   customDecorators: [],
+  onDragMove: () => {},
 };
 
 export default WysiwygEditor;

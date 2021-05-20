@@ -64,11 +64,21 @@ class WysiwygEditor extends Component {
       editorState,
       editorFocused: false,
       toolbar,
+      isDragging: false,
     };
+
+    this.handlePointerUp = this.handlePointerUp.bind(this);
+    this.handlePointerDown = this.handlePointerDown.bind(this);
+    this.handlePointerMove = this.handlePointerMove.bind(this);
   }
 
   componentDidMount() {
     this.modalHandler.init(this.wrapperId);
+    window.addEventListener('pointerup', this.handlePointerUp);
+  }
+
+  componentDidUmount() {
+    window.removeEventListener('pointerup', this.handlePointerUp);
   }
   // todo: change decorators depending on properties recceived in componentWillReceiveProps.
 
@@ -159,6 +169,35 @@ class WysiwygEditor extends Component {
     }
     return getDefaultKeyBinding(event);
   };
+
+
+  // DRAG FUNCTIONALITIES
+  handlePointerDown(e) {
+    // const { onPointerDown } = this.props;
+    this.setState({
+      isDragging: true,
+    });
+
+    // onPointerDown(e);
+  };
+
+  handlePointerUp(e) {
+    // const { onPointerUp } = this.props;
+    this.setState({
+      isDragging: false,
+    });
+
+    // onPointerUp(e);
+  };
+
+  handlePointerMove(e) {
+    const { isDragging } = this.state;
+    const { onDragMove } = this.props;
+    if (isDragging) onDragMove(e);
+
+    // onPointerMove(e);
+  };
+
 
   onToolbarFocus = event => {
     const { onFocus } = this.props;
@@ -453,6 +492,8 @@ class WysiwygEditor extends Component {
               ...toolbarStyle,
             }}
             onMouseDown={this.preventDefault}
+            onPointerDown={this.handlePointerDown}
+            onPointerMove={this.handlePointerMove}
             aria-label="rdw-toolbar"
             aria-hidden={(!editorFocused && toolbarOnFocus).toString()}
             onFocus={this.onToolbarFocus}

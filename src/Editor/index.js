@@ -77,7 +77,7 @@ class WysiwygEditor extends Component {
     window.addEventListener('pointerup', this.handlePointerUp);
   }
 
-  componentDidUmount() {
+  componentWillUmount() {
     window.removeEventListener('pointerup', this.handlePointerUp);
   }
   // todo: change decorators depending on properties recceived in componentWillReceiveProps.
@@ -183,9 +183,12 @@ class WysiwygEditor extends Component {
 
   handlePointerUp(e) {
     // const { onPointerUp } = this.props;
+    e.target.style.cursor = 'cursor';
     this.setState({
       isDragging: false,
     });
+
+
 
     // onPointerUp(e);
   };
@@ -193,7 +196,10 @@ class WysiwygEditor extends Component {
   handlePointerMove(e) {
     const { isDragging } = this.state;
     const { onDragMove } = this.props;
-    if (isDragging) onDragMove(e);
+    if (isDragging) {
+      onDragMove(e);
+      e.target.style.cursor = 'grabbing';
+    }
 
     // onPointerMove(e);
   };
